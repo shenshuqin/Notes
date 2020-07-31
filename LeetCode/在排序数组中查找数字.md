@@ -1,0 +1,89 @@
+#### [面试题53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+统计一个数字在排序数组中出现的次数。
+
+**示例 1:**
+
+```
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: 2
+```
+
+**示例 2:**
+
+```
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: 0
+```
+
+### 解法
+
+for解法
+
+```js
+var search = function(nums, target) {
+    let count = 0;
+    nums.forEach((item)=>{
+        if(item === target){
+            count++
+        }
+    })
+    return count;
+};
+```
+
+哈希解法
+
+```js
+var search = function (nums, target) {
+    let map = new Map()
+    nums.forEach((num, i) => {
+        if (num === target) {
+            map.set(num, map.has(num) ? map.get(num) + 1 : 1)
+        }
+    })
+    return map.get(target) || 0
+};
+
+```
+
+二分查找(感觉这个代码还是很冗余)
+
+```js
+var search = function (nums, target) {
+    if (!nums || nums.length === 0) return 0;
+
+    let start = 0,
+        end = nums.length - 1,
+        middle = Math.floor((end - start) / 2) + start,
+        count = 0,
+        flag = false;
+    while (start <= end) {
+        if (nums[middle] < target) {
+            start = middle + 1;
+        } else if (nums[middle] > target) {
+            end = middle - 1;
+        } else {
+            flag = true;
+            break;
+        }
+        middle = Math.floor((end - start) / 2) + start;
+
+    }
+    
+    if (flag) {
+        for (let i = middle; i >= 0; --i) {
+            if (nums[i] === target) {
+                ++count;
+            }
+        }
+        for (let i = middle + 1; i < nums.length; ++i) {
+            if (nums[i] === target) {
+                ++count;
+            }
+        }
+    }
+    return count;
+};
+```
+

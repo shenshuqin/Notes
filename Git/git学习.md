@@ -2,7 +2,93 @@
 
 https://www.cnblogs.com/sdcs/p/8270029.html
 
+### GIt下载
+
+下载地址:https://git-scm.com/dowloads
+
+### Git本地工作区域
+
+对于任何一个文件,在git内都只有三种区域:工作区,暂存区,本地仓库
+
++ 工作区:表示新增或修改了某个文件,但是还没有保存好
++ 暂存区:表示把已经新增或修改的文件,放在下次提交时要保存的清单中,
++ 本地仓库:文件已经被安全保存在本地仓库了
+
+### 设置签名信息
+
+作用:区分不同开发人员的身份信息
+
+#### 项目级别:仅在当前目录的本地git仓库有效
+
+```shell
+git config user.name ssq
+git config user.email ssq@qq.com
+```
+
+签名信息保存在:`./git/config文件中`
+
+```shell
+/*查看文件位置*/
+pwd
+
+git config user.name ssq
+git config user.email ssq@qq.com
+
+/*查看文件内容*/
+cat .git/config
+```
+
+#### 系统用户级别:登录当前操作系统的用户范围
+
+```shell
+git config --global user.name ssq
+git config --global user.email ssq@qq.com
+```
+
+### 生成秘钥
+
+```shell
+# 进入当前用户目录
+$ cd ~
+# 如果有.ssh目录,则删除.ssh目录
+$ rm -rvf .ssh
+
+# 命令生成.ssh密钥目录
+$ ssh-keygen -t rsa -C ssq@qq.com
+# 进入.ssh目录查看文件列表
+$ cd .ssh
+# 查看所有目录与文件
+$ ls -lf
+# 查看id_rsa.pub文件内容
+$ cat id_rsa.pub
+```
+
+
+
+### Git 基本操作
+
++ 查看状态 `git status`
+
++ 创建文件(按i 插入内容,按:wq保存并退出,按!q不保存强制退出) `vim demo.txt`
+
++ 查看版本的历史记录 `git log` 每条记录只显示一行 `git log --pretty=oneline`
+
++ 显示回滚版本步数:`git reflog`
+
++ 前进后退版本版本
+
+  + 基于索引值操作:`git reset --hard <索引值>` 
+  + 举例: `git reset --hard 64d3d2a`
+
++ 后退版本
+
+  + 使用^符号:只能后退 `git reset --hard HEAD^`
+  + 使用~符号,只能后退:`git resrt --hard HEAD~n`
+
+  + 对比文件差异:`git diff <文件名>`
+
 ### 第一次提交到git
+
 + 在github上创建一个仓库
 + 通过命令 git init 把文件夹变成Git可管理的仓库
 ```shell
@@ -45,8 +131,6 @@ $ git clone  https://github.com/shenshuqin/models.git newfoldername
 $ git clone  https://github.com/shenshuqin/models.git newfoldername 
 #初始化本地仓库
 $ git init
-#关联远程
-#$ git remote add origin https://github.com/shenshuqin/models.git
 #然后就可以进行改动了
 #改动之后添加改动
 $ git add .
@@ -55,6 +139,44 @@ $ git commit . -m 克隆后第一次改动
 #提交改动到远程仓库
 $ git push origin master
 ```
+### PULL拉取
+
+pull拉取其实是操作两步: pull = fetch + merge
+
+fetch 操作:只是把远程仓库下载到本地,但是没有改变本地工作区的文件
+
+merge操作: 把远程仓库地址合并到本地代码中,git merge 远程仓库别名/远程分支名
+
+```shell
+git fetch 远程仓库名  远程分支名
+
+# 演示
+
+git fetch origin master
+cat demo.txt //查看并没有改变本地工作区的文件
+git checkout origin/master  //切换到远程分支对比内容
+cat demo.txt  //内容不一样
+
+git checkout master //切换本地仓库
+
+ # 合并
+ git merge origin/master
+```
+
+pull 操作
+
+```shell
+git pull 远程仓库别名  远程分支
+
+# 演示
+
+git checkout master
+
+git pull origin master
+```
+
+
+
 ### 新建分支
 
 ```shell
@@ -74,19 +196,6 @@ git push origin ssq
 ### 合并
 
 ```shell
-#方法一
-# 首先切换到分支
-git checkout ssq
-# 使用git pull 把分支代码pull下来
-git pull
-# 切换到主分支
-git checkout master
-# 将分支代码merge到主分支
-git merge ssq
-#推送上去
-git push
-
-#方法二
 #首先切换到分支
 git checkout ssq
 #拉取主分支,即可合并

@@ -141,16 +141,6 @@ npx jest --coverage
 
  修改保存后，我们在终端再次运行`yarn test`,这时候测试一次后，它并没有结束，而是等待测试文件的变化，变化后就会自动进行测试。 
 
-### only 只测试某一个用例
-
-```js
-test.only("只测试这一个",()=>{
-    .....
-})
-```
-
-
-
 #### 匹配器
 
 ##### 1.toBe()
@@ -162,7 +152,6 @@ test('测试严格相等',()=>{
     const a = {number:'007'}   
     expect(a).toBe({number:'007'})
 }) 
-//不会通过
 ```
 
 ##### 2.toEqual()
@@ -174,7 +163,6 @@ test('测试严格相等',()=>{
     const a = {number:'007'}   
     expect(a).toEqual({number:'007'})
 }) 
-//通过
 ```
 
  所以说当你不严格匹配但要求值相等时时就可以使用`toEqual（）`匹配器。 
@@ -187,7 +175,7 @@ test('测试严格相等',()=>{
 + `toBeFalsy()` 就相当于判断真假的 
 + `toBeTruthy()` 就相当于判断真假的 
 
-##### 4.toBeGreaterThan()----大于,toBeLessThan()----小于,toBeGreaterThanOrEqual()----大于等于,toBeLessThanOrEqual()----小于等于
+##### 4.toBeGreaterThan()----大于,toBeLessThan()----小小于,toBeGreaterThanOrEqual()----大于等于,toBeLessThanOrEqual()----小于等于
 
 ##### 5. `toBeCloseTo()`匹配器 
 
@@ -355,7 +343,7 @@ npm install @babel/core@7.4.5 @babel/preset-env@7.4.5 -D
 npm run test
 ```
 
-#### 测试异步方法---返回回调函数
+#### 测试异步方法
 
 1.新建文件
 
@@ -367,7 +355,6 @@ export const fetchData = (fn)=>{
         fn(response.data)
     })
 }
-//  http://a.jspang.com/jestTest.json 返回值是{success:data}
 ```
 
 2.测试文件
@@ -433,7 +420,7 @@ test('FetchTwoData 测试', ()=>{
   })
 ```
 
-#### 异步测试方法---404接口时测试
+#### 异步测试方法---不存在接口
 
 在工作中有时候会测试异步接口不存在的需求（虽然不多，但这里有坑），比如有些后台需求不允许前台访问时，这时候就会返回404（页面不存在），这时候在测试时也存在一些坑，所以单独拿出来给大家讲一下。 
 
@@ -457,38 +444,6 @@ test('FetchThreeData 测试', ()=>{
   })
 ```
 
-### 包含测试方法---resolves,reject
-
-1.异步代码
-
-```js
- export const fetchFourData = ()=>{
-    return axios.get('http://a.jspang.com/jestTest.json')
-}
-```
-
-2.测试成功
-
-```js
-test('FetchFourData 测试', async()=>{
-	return expect (fetchData()).resolves.toMatchObject({
-        data:{
-            success:true
-        }
-    })
-})
-```
-
-3.测试404
-
-```js
-test('FetchFourData 测试', async()=>{
-	return expect (fetchData()).reject.toThrow()
-})
-```
-
-
-
 #### 异步测试方法----async-await
 
 1.异步代码
@@ -508,24 +463,5 @@ test('FetchFourData 测试', async()=>{
             success : true
         })
 })
-//try catch方法
-
-test('测试',async()=>{
-    expect.assertions(1)
-    try{
-        await fetchFourData()
-    }catch(e){
-        expect(e.toString().indexOf('404')> -1).toBe(true)
-    }
-})
 ```
 
-### Jest命令行工具的使用
-
-+ f : 只测试上次失败的测试用例,通过后再也不会测试
-
-+ o：只测试文件内容发生更改的测试（需要使用git）（jest --watch可以直接进入该模式）
-
-+ t：测试用例的名称包含输入的名称的测试用例
-
-+ p：测试文件名包含输入的名称的测试用例

@@ -303,4 +303,21 @@ git remote add origin git@github.com:.....//(新路径)
 //重新push
 git push -u origin master
 ```
+### 上游仓库的操作
+#### 1.首先fork
+#### 2.将远程仓库clone下来
+#### 3.将代码复制拷贝入本地仓库,然后push至远程仓库
+#### 4.发起合并请求至上游仓库-分支
+#### 5.拉取上游仓库
+```shell
+//关联仓库
+git remote add upstream url(上游仓库地址)
+git remote show
+//切换
+git switch master
+//拉取(相应的分支)
+git pull upstream master
+```
+#### 6.push到远程仓库
+
 

@@ -14,25 +14,25 @@
 
 ```js
 <script>
-		((win,doc)=>{
-			let res = ()=>{
-				let width = doc.documentElement.clientWidth/16
-				doc.getElementsByTagName('html')[0].style.fontSize = width + 'px'
-			}
+	((win,doc)=>{
+		let res = ()=>{
+			let width = doc.documentElement.clientWidth/16 // 动态设置rem的大小
+			doc.getElementsByTagName('html')[0].style.fontSize = width + 'px'
+		}
+		res()
+		win.onresize = ()=>{
 			res()
-			win.onresize = ()=>{
-				res()
-			}
-		})(window,document)
+		}
+	})(window,document)
 
-	</script>
+</script>
 ```
 
 3.scss 将UI设计稿px转换为rem
 
 ```scss
 @function nav($arg){
-	@return $arg/ 46.875 *1rem;  //750/16 = 46.875,如果设计稿是750px
+	@return $arg/ 46.875 *1rem;  //750/16 = 46.875,如果设计稿是750px 那么每rem应该对应46.875px， $arg/ 46.875计算该盒子有多少rem
 }
 
 *{
